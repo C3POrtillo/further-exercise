@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+
+}
+
+@media (prefers-color-scheme: dark) {
+
+}
+
+body {
+ margin: 0 8rem;
+}
+
+form {
+  border: 5px solid black;
+}
+
+
+
+@layer utilities {
+
+}
