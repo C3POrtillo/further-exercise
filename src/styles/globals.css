@@ -2,24 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-
+@layer base {
+  html {
+    @apply text-white;
+    @apply font-semibold;
+  }
+  body {
+    @apply bg-slate-700
+  }
+  section {
+    margin: 4rem 16rem;
+  }
 }
 
-@media (prefers-color-scheme: dark) {
-
-}
-
-body {
- margin: 0 8rem;
-}
-
-form {
-  border: 5px solid black;
-}
-
-
-
-@layer utilities {
-
-}
