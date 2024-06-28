@@ -1,5 +1,6 @@
 'use client';
 
+import { sendGTMEvent } from '@next/third-parties/google';
 import React, { useState } from 'react';
 
 import type { FC } from 'react';
@@ -43,6 +44,7 @@ const Form: FC<FormProps> = ({ id, ...props }) => {
           disabled={validateData({ firstName, lastName, email, phoneNumber })}
           onClick={() => {
             submit({ firstName, lastName, email, phoneNumber });
+            sendGTMEvent({ event: 'tast-one-button-clicked', value: { firstName, lastName, email, phoneNumber } })
           }}
         >
           Submit
