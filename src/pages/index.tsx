@@ -1,4 +1,4 @@
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
+import { GoogleTagManager } from '@next/third-parties/google';
 import React from 'react';
 
 import type { FC } from 'react';
@@ -10,7 +10,6 @@ import Header from '@/components/header/Header';
 const Index: FC = () => (
   <>
     <GoogleTagManager gtmId="GTM-NDPHBTKT" />
-    <GoogleAnalytics gaId="G-XQXWQB8SXL" />
     <Header heading="Integration Specialist Submission" />
     <Container>
       <Form id="task-one-form" />

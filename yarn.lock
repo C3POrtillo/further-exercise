@@ -378,6 +378,11 @@
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.10.tgz#04ffa7f406ab628f7f7e97ca23e290cd8ab15efc"
   integrity sha512-IfYcSBWE3hLpBg8+X2SEa8LVkJdJEkT2Ese2aaLs3ptGdVtABxndrMaxuFlQ1qdFf9Q5rDvDpxI3WwgvKFAsQA==
 
+"@types/validator@^13.12.0":
+  version "13.12.0"
+  resolved "https://registry.yarnpkg.com/@types/validator/-/validator-13.12.0.tgz#1fe4c3ae9de5cf5193ce64717c99ef2fa7d8756f"
+  integrity sha512-nH45Lk7oPIJ1RVOF6JgFI6Dy0QpHEzq4QecZhvguxYPDwT8c93prCMqAtiIttm39voZ+DDR+qkNnMpJmMBRqag==
+
 "@typescript-eslint/eslint-plugin@^5.60.1":
   version "5.62.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.62.0.tgz#aeef0328d172b9e37d9bab6dbc13b87ed88977db"
@@ -4014,6 +4019,11 @@ uvu@^0.5.0, uvu@^0.5.6:
     diff "^5.0.0"
     kleur "^4.0.3"
     sade "^1.7.3"
+
+validator@^13.12.0:
+  version "13.12.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-13.12.0.tgz#7d78e76ba85504da3fee4fd1922b385914d4b35f"
+  integrity sha512-c1Q0mCiPlgdTVVVIJIrBuxNicYE+t/7oKeI9MWLj3fh/uq2Pxh/3eeWbVZ4OcGW1TUf53At0njHw5SMdA3tmMg==
 
 vfile-message@^3.0.0:
   version "3.1.4"
