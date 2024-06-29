@@ -114,6 +114,8 @@ export const submit = async ({ ...props }: FormData) => {
     return 'Missing environment variables';
   }
 
+  sendGTMEvent({ event: 'form-submit', value: { props } });
+
   if (validateData({ ...props })) {
     if (!isEmail(props.email) || !isPhoneNumber(props.phoneNumber)) {
       const form = await createFormData({ ...props });
@@ -171,7 +173,6 @@ export const submit = async ({ ...props }: FormData) => {
     }
   }
 
-  sendGTMEvent({ event: 'form-submit', value: { props } });
   const form = await createFormData({ ...props });
   form.append('community_id', process.env.COMMUNITY_ID);
 
