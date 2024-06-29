@@ -18,9 +18,9 @@ const Index: FC = () => {
         <Form id="task-one-form" setResponse={setResponse} />
       </Container>
       <Container>
-        <div className="flex flex-col justify-center">
-          <h2 className="text-center text-3xl">Response</h2>
-          <p className="w-1/2 self-center">{response}</p>
+        <div className="flex w-1/2 flex-col justify-center">
+          <h2 className="w-full text-center text-3xl">Response</h2>
+          <p className="self-center">{response}</p>
         </div>
       </Container>
     </>
