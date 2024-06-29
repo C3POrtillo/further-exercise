@@ -28,12 +28,12 @@ const Text: FC<TextProps> = ({ type, label, id, name, value, setState, ...props 
         onChange={e => {
           setState(e.target.value);
           if (props.required) {
-            setBorderColor(getBorderColor(e.target.value));
+            setBorderColor(getBorderColor(e.target.value, type));
           }
         }}
         onClick={() => {
           if (props.required) {
-            setBorderColor(getBorderColor(value as string));
+            setBorderColor(getBorderColor(value as string, type));
           }
         }}
         {...props}
