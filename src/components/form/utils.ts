@@ -38,6 +38,17 @@ interface LeadProps {
   external_lead_id?: string | null;
 }
 
+const contentTypeJSON = {
+  'Content-Type': 'application/json',
+};
+
+const zapierHeader = {
+  Authorization: `Api-Key ${process.env.ZAPIER_KEY}`,
+  ...contentTypeJSON,
+};
+
+const buildResponse = (...args: string[]) => args.join('\n');
+
 const isLeadsResponse = (object: object): object is LeadsResponseProps => 'next' in object && 'results' in object;
 
 const isPhoneNumber = (phoneNumber: string) => phoneNumber?.length === 10 && Number.isInteger(Number(phoneNumber));
@@ -62,13 +73,16 @@ const getLeads = async (options: object) => {
   }
 };
 
-const foundDuplicatePhoneNumber = (results: Array<LeadProps>, phoneNumber: string) =>
-  !results.every(lead => lead.phone !== phoneNumber);
+const foundDuplicatePhoneNumber = (results: Array<LeadProps>, phoneNumber: string) => {
+  const found = results.find(lead => lead.phone === phoneNumber);
 
-const checkForDuplicatePhoneNumber = async (phoneNumber: string, headers: object) => {
+  return found?.email || false;
+};
+
+const checkForDuplicatePhoneNumber = async (phoneNumber: string) => {
   const options = {
     method: 'GET',
-    headers,
+    headers: zapierHeader,
   };
 
   let response = (await getLeads({
@@ -80,7 +94,7 @@ const checkForDuplicatePhoneNumber = async (phoneNumber: string, headers: object
     return response;
   }
 
-  let foundDuplicate = false;
+  let foundDuplicate: string | boolean = false;
   while (!foundDuplicate && response?.count > 0 && !!response.results?.length) {
     foundDuplicate = foundDuplicatePhoneNumber(response.results, phoneNumber);
     response = (await getLeads({
@@ -108,31 +122,53 @@ export const submit = async ({ ...props }: FormData) => {
         url: process.env.GOOGLE_SHEET_URL,
         data: form,
         headers: {
-          'Content-type': 'multipart/form-data'
-        }
-      }
+          'Content-type': 'multipart/form-data',
+        },
+      };
+
+      const response = 'Invalid email or phone\n';
 
       try {
-        await axios(options)
-        
-        return 'Invalid email or phone, Successfully submitted to Google Sheets'
+        await axios(options);
+
+        return buildResponse(response, 'Successfully submitted to Google Sheets');
       } catch (error) {
-        return 'Invalid email or phone, Error submitting to Google Sheets'
+        return buildResponse(response, 'Error submitting to Google Sheets');
       }
     }
 
     return 'Missing data';
   }
 
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Api-Key ${process.env.ZAPIER_KEY}`,
-  };
+  const isValidated = await checkForDuplicatePhoneNumber(props.phoneNumber);
 
-  const isValidated = await checkForDuplicatePhoneNumber(props.phoneNumber, headers);
+  if (isValidated) {
+    if (typeof isValidated === 'string') {
+      const response = 'Duplicate phone number registered';
 
-  if (isValidated as unknown as boolean) {
-    return 'Duplicate phone number found';
+      const data = {
+        service_id: process.env.EMAILJS_SERVICE_ID,
+        template_id: process.env.EMAILJS_TEMPLATE_ID,
+        user_id: process.env.EMAILJS_PUBLIC_KEY,
+      };
+
+      const options = {
+        method: 'POST',
+        url: 'https://api.emailjs.com/api/v1.0/email/send',
+        data,
+        headers: contentTypeJSON,
+      };
+
+      try {
+        await axios(options);
+
+        return buildResponse(response, 'An email notification was sent to the registered email');
+      } catch (error) {
+        return buildResponse(response, 'Failed to send email notification to registered email');
+      }
+    } else {
+      return isValidated;
+    }
   }
 
   sendGTMEvent({ event: 'form-submit', value: { props } });
@@ -142,7 +178,7 @@ export const submit = async ({ ...props }: FormData) => {
   const options = {
     method: 'POST',
     url: 'https://api.talkfurther.com/api/chat/leads/ingestion/zapier-webhook',
-    headers,
+    headers: zapierHeader,
     data: form,
   };
 
