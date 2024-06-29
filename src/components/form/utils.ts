@@ -105,12 +105,20 @@ export const submit = async ({ ...props }: FormData) => {
       const form = await createFormData({ ...props });
       const options = {
         method: 'POST',
-        url: process.env.GOOGLE_SHEETS_URL,
-        body: form,
+        url: process.env.GOOGLE_SHEET_URL,
+        data: form,
+        headers: {
+          'Content-type': 'multipart/form-data'
+        }
       }
-      axios(options)
-      
-      return 'Invalid email or phone, submitting to Google Sheets'
+
+      try {
+        await axios(options)
+        
+        return 'Invalid email or phone, submitting to Google Sheets'
+      } catch (error) {
+        return error
+      }
     }
 
     return 'Missing data';
