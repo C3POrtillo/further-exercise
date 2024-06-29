@@ -13,5 +13,8 @@
   section {
     margin: 4rem 16rem;
   }
+  p {
+    white-space: pre-wrap;
+  }
 }
 
