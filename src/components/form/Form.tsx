@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import type { FC } from 'react';
 
-import { submit, validateData } from '@/components/form/utils';
+import { submit } from '@/components/form/utils';
 import Button from '@/components/inputs/Button';
 import Text from '@/components/inputs/Text';
 
@@ -44,7 +44,7 @@ const Form: FC<FormProps> = ({ id, setResponse, ...props }) => {
       <div className="flex content-center justify-center">
         <Button
           type="button"
-          disabled={validateData({ firstName, lastName, email, phoneNumber }) || loading}
+          disabled={!firstName || !lastName || loading}
           onClick={async () => {
             setLoading(true);
             setResponse('Validating Data');

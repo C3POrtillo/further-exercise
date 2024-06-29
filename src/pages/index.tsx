@@ -8,7 +8,7 @@ import Form from '@/components/form/Form';
 import Header from '@/components/header/Header';
 
 const Index: FC = () => {
-  const [response, setResponse] = useState('No Data Received');
+  const [response, setResponse] = useState('Awaiting user submission');
 
   return (
     <>

@@ -42,9 +42,8 @@ const isLeadsResponse = (object: object): object is LeadsResponseProps => 'next'
 
 const isPhoneNumber = (phoneNumber: string) => phoneNumber?.length === 10 && Number.isInteger(Number(phoneNumber));
 
-const createFormData = async ({ firstName, lastName, email, phoneNumber }: FormData, community_id: string) => {
+const createFormData = async ({ firstName, lastName, email, phoneNumber }: FormData) => {
   const form = new FormData();
-  form.append('community_id', community_id);
   form.append('first_name', firstName);
   form.append('last_name', lastName);
   form.append('email', email);
@@ -102,6 +101,18 @@ export const submit = async ({ ...props }: FormData) => {
   }
 
   if (validateData({ ...props })) {
+    if (!isEmail(props.email) || !isPhoneNumber(props.phoneNumber)) {
+      const form = await createFormData({ ...props });
+      const options = {
+        method: 'POST',
+        url: process.env.GOOGLE_SHEETS_URL,
+        body: form,
+      }
+      axios(options)
+      
+      return 'Invalid email or phone, submitting to Google Sheets'
+    }
+
     return 'Missing data';
   }
 
@@ -117,7 +128,8 @@ export const submit = async ({ ...props }: FormData) => {
   }
 
   sendGTMEvent({ event: 'form-submit', value: { props } });
-  const form = await createFormData({ ...props }, process.env.COMMUNITY_ID);
+  const form = await createFormData({ ...props });
+  form.append('community_id', process.env.COMMUNITY_ID);
 
   const options = {
     method: 'POST',
