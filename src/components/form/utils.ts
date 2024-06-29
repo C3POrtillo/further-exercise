@@ -115,9 +115,9 @@ export const submit = async ({ ...props }: FormData) => {
       try {
         await axios(options)
         
-        return 'Invalid email or phone, submitting to Google Sheets'
+        return 'Invalid email or phone, Successfully submitted to Google Sheets'
       } catch (error) {
-        return error
+        return 'Invalid email or phone, Error submitting to Google Sheets'
       }
     }
 
